@@ -60,7 +60,7 @@ public class Tirage {
 		nbItems = new ArrayList<>();
 		for(int i = 0; i < items.size(); i++) {nbItems.add(0);}
 		
-		int resTirage=0;
+		int resTirage;
 		for(int i=0; i<nbTirages; i++) {
 			resTirage = faireTirage();
 			nbItems.set(resTirage, nbItems.get(resTirage)+1);
@@ -72,10 +72,13 @@ public class Tirage {
 		if(nbItems == null) resultatString = "Aucun tirage effectué dernièrement";
 		else {
 			int nbTirages;
+			Item item;
 			resultatString = "Résultats du dernier tirage";
 			for(int i = 0; i < items.size(); i++) {
 				nbTirages = nbItems.get(i);
-				if (nbTirages>0)resultatString+="\n\""+items.get(i).getNom() + "\" : tiré " + nbTirages+" fois";
+				item = items.get(i);
+				if (nbTirages>0)
+					resultatString+="\n\""+item.getQuantite() +"x " + item.getNom() + "\" : tiré " + nbTirages+" fois. Total = "+ item.getQuantite()*nbTirages;
 			}
 		}
 		return resultatString;
