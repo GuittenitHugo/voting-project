@@ -26,6 +26,11 @@ public class Tirage {
 		this.items.add(item);
 		probaTotale+=item.getProbabilite();
 	}
+	
+	public void RetirerItem(Item item) {
+		if (this.items.remove(item))
+			probaTotale-=item.getProbabilite();
+	}
 
 	public double getProbaGlobale() {
 		return probaTotale;
