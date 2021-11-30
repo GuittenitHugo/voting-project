@@ -26,6 +26,9 @@ public class TestVotingProject {
 		System.out.println(tirage.getResultatDernierTirage());
 		tirage.effectuerTirages(1500);
 		System.out.println(tirage.getResultatDernierTirage());
-		
+
+		fDialog.setVisible(false);
+
+		System.exit(0);
 	}
 }

@@ -50,6 +50,7 @@ public class ExpertChargementCSV extends ExpertCOR {
                             )
                     );
                 }
+                reader.close();
                 return items;
             }
         }catch(Exception e){
