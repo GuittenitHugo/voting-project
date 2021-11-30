@@ -4,10 +4,12 @@ public class Item {
 
 	private String nom;
 	private double probabilite;
+	private int quantite;
 	
-	public Item(String nom, double probabilite) {
+	public Item(String nom, int quantite,double probabilite) {
 		this.nom = nom;
 		this.probabilite = probabilite;
+		this.quantite = quantite;
 	}
 	
 	public String getNom() {
@@ -22,10 +24,17 @@ public class Item {
 	public void setProbabilite(double probabilite) {
 		this.probabilite = probabilite;
 	}
+	public int getQuantite() {
+		return quantite;
+	}
+	public void setQuantite(int quantite) {
+		this.quantite = quantite;
+	}
+
 
 	@Override
 	public String toString() {
-		return "Item [nom=" + nom + ", probabilite=" + probabilite + "]";
+		return "Item [nom=" + nom +", quantite="+ quantite + ", probabilite=" + probabilite + "]";
 	}
 	
 	
