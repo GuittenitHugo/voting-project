@@ -17,7 +17,6 @@ public class gestionFichierCSV extends gestionFichier{
         try{
             Scanner reader = new Scanner(new File(path));
             Tirage t = Tirage.getInstance();
-            t.setItems(new ArrayList<>());
             if(reader.hasNextLine()){
                 String line = reader.nextLine();
                 if(line.matches(".*[0-9]+.*")) stringIntoTirage(line, t);
@@ -26,6 +25,7 @@ public class gestionFichierCSV extends gestionFichier{
                     stringIntoTirage(line, t);
                 }
                 reader.close();
+                System.out.println(t.getItems());
                 return t;
             }
         }catch(Exception e){
@@ -37,7 +37,7 @@ public class gestionFichierCSV extends gestionFichier{
     private void stringIntoTirage(String line, Tirage t){
         ArrayList<String> res = new ArrayList<>();
         String[] resList;
-        resList = line.contains(";") ? line.split(";") : line.split(",");
+        resList = line.contains(";") ? line.split(";") : line.split(",",3);
         res = new ArrayList<>(Arrays.asList(resList));
         t.AjouterItem(
                 new Item(
@@ -58,7 +58,6 @@ public class gestionFichierCSV extends gestionFichier{
             boolean hasDernierTirage = t.getResultatDernierTirage() != "Aucun tirage effectué dernièrement";
 
             ArrayList<Item> tItems = t.getItems();
-            ArrayList<Integer> tDernierTirage = t.getNbItems();
             double probaGlobale = t.getProbaGlobale();
             Item item;
 
@@ -73,8 +72,6 @@ public class gestionFichierCSV extends gestionFichier{
                                 item.getQuantite()+",\""+
                                 new BigDecimal(item.getProbabilite()/probaGlobale).toPlainString().replaceFirst("\\.", ",") +"\""
                 );
-                if(hasDernierTirage)
-                    writer.write(","+tDernierTirage.get(i));
                 writer.write("\n");
             }
             writer.close();
