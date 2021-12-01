@@ -66,6 +66,10 @@ public class Tirage {
 			nbItems.set(resTirage, nbItems.get(resTirage)+1);
 		}
 	}
+
+	public ArrayList<Integer> getNbItems(){
+		return nbItems;
+	}
 	
 	public String getResultatDernierTirage(){
 		String resultatString;
