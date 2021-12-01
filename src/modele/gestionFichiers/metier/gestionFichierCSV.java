@@ -16,7 +16,8 @@ public class gestionFichierCSV extends gestionFichier{
     public Tirage charger(String path){
         try{
             Scanner reader = new Scanner(new File(path));
-            Tirage t = new Tirage(new ArrayList<>());
+            Tirage t = Tirage.getInstance();
+            t.setItems(new ArrayList<>());
             if(reader.hasNextLine()){
                 String line = reader.nextLine();
                 if(line.matches(".*[0-9]+.*")) stringIntoTirage(line, t);
@@ -48,9 +49,11 @@ public class gestionFichierCSV extends gestionFichier{
     }
 
     @Override
-    public boolean sauvegarder(Tirage t, String path) {
+    public boolean sauvegarder(String path) {
         if(path.isBlank())
+            return false;
         try{
+            Tirage t = Tirage.getInstance();
             FileWriter writer = new FileWriter(path);
             boolean hasDernierTirage = t.getResultatDernierTirage() != "Aucun tirage effectué dernièrement";
 
