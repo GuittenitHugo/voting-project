@@ -1,29 +1,42 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 import modele.Item;
 import modele.Tirage;
+import modele.gestionFichiers.experts.Expert;
+import modele.gestionFichiers.experts.chargement.ExpertChargementCSV;
+import modele.gestionFichiers.visiteur.sauvegarde.VisiteurSauvegardeCSV;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class TestVotingProject {
 
 	public static void main(String[] args) {
-		ArrayList<Item> listeItemsDeVote= new ArrayList<>();
+		
+		final Tirage tirage = new Tirage(new ArrayList<>());
 
-		listeItemsDeVote.add(new Item("item1",16, 10));
-		listeItemsDeVote.add(new Item("item2",1, 20));
-		listeItemsDeVote.add(new Item("item3",1, 15));
-		listeItemsDeVote.add(new Item("item4",8, 30));
-		listeItemsDeVote.add(new Item("item5",32, 50));
-		listeItemsDeVote.add(new Item("item6",1, 35));
-		listeItemsDeVote.add(new Item("item7",4, 40));
-		listeItemsDeVote.add(new Item("item8",64, 5));
-		listeItemsDeVote.add(new Item("item9",16, 25));
-		
-		Tirage tirage = new Tirage(listeItemsDeVote);
-		//System.out.println(tirage);
-		
+		Expert expertChargement = new ExpertChargementCSV(null);
+
+		FileDialog fDialog = new FileDialog((Frame)null, "");
+		fDialog.setTitle("Choisir un fichier à charger");
+		fDialog.setMode(FileDialog.LOAD);
+		fDialog.setVisible(true);
+
+		tirage.setItems((ArrayList<Item>) expertChargement.resoudre(fDialog.getDirectory()+fDialog.getFile()));
+
 		System.out.println(tirage.getResultatDernierTirage());
+
 		tirage.effectuerTirages(1500);
 		System.out.println(tirage.getResultatDernierTirage());
-		
+		System.out.println(tirage);
+
+		fDialog.setTitle("Choisir ou sauvegarder le fichier");
+		fDialog.setMode(FileDialog.SAVE);
+		fDialog.setVisible(true);
+
+		tirage.accepteSauvegarde(new VisiteurSauvegardeCSV(fDialog.getDirectory()+fDialog.getFile()));
+
+		System.exit(0);
 	}
 }

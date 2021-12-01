@@ -1,5 +1,7 @@
 package modele;
 
+import modele.gestionFichiers.visiteur.Visiteur;
+
 import java.util.ArrayList;
 
 public class Tirage {
@@ -93,6 +95,6 @@ public class Tirage {
 		return "Tirage [items=" + items + ", probaTotale=" + probaTotale + "]";
 	}
 	
-	
+	public void accepteSauvegarde(Visiteur v){v.visite(this);}
 	
 }
