@@ -17,6 +17,7 @@ public class gestionFichierCSV extends gestionFichier{
         try{
             Scanner reader = new Scanner(new File(path));
             Tirage t = Tirage.getInstance();
+            t.setItems(new ArrayList<>());
             if(reader.hasNextLine()){
                 String line = reader.nextLine();
                 if(line.matches(".*[0-9]+.*")) stringIntoTirage(line, t);
