@@ -9,10 +9,14 @@ public class Tirage {
 	private ArrayList<Item> items;
 	private double probaTotale;
 	private ArrayList<Integer> nbItems;
-	
-	public Tirage(ArrayList<Item> items) {
-		super();
-		setItems(items);
+
+	private static Tirage instance;
+
+	public static Tirage getInstance(){
+		if (instance==null){
+			instance=new Tirage();
+		}
+		return instance;
 	}
 
 	public ArrayList<Item> getItems() {
