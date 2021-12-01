@@ -18,11 +18,12 @@ public class TestVotingProject {
 		listeItemsDeVote.add(new Item("item8",64, 5));
 		listeItemsDeVote.add(new Item("item9",16, 25));
 		
-		Tirage tirage = new Tirage(listeItemsDeVote);
+		Tirage tirage = Tirage.getInstance();
+		tirage.setItems(listeItemsDeVote);
 		//System.out.println(tirage);
 		
 		System.out.println(tirage.getResultatDernierTirage());
-		tirage.effectuerTirages(1500);
+		Tirage.getInstance().effectuerTirages(1500);
 		System.out.println(tirage.getResultatDernierTirage());
 		
 	}
