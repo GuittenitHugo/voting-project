@@ -68,18 +68,29 @@ public class VotingProjectWindow extends JFrame {
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane itemListScroll = new JScrollPane(itemList);
 
+        NumberFormat integerFormat = NumberFormat.getIntegerInstance();
+        
+        JFormattedTextField nomItemAdd = new JFormattedTextField();
+        JSpinner itemQtyAdd = new JSpinner();
+        SpinnerModel itemQtyModel = new SpinnerNumberModel(1, 1, 64, 1);
+        itemQtyAdd.setModel(itemQtyModel);
+        JFormattedTextField txt = ((JSpinner.NumberEditor) itemQtyAdd.getEditor()).getTextField();
+        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+
         JButton ajouterBtn = new JButton("Ajouter item");
         JButton retirerBtn = new JButton("Retirer item");
         JButton tirageBtn = new JButton("Faire tirage(s)");
 
-        NumberFormat integerFormat = NumberFormat.getIntegerInstance();
         nbTiragesField = new JSpinner();
         SpinnerModel model = new SpinnerNumberModel(1, 1, 999999999, 1);
         nbTiragesField.setModel(model);
-        JFormattedTextField txt = ((JSpinner.NumberEditor) nbTiragesField.getEditor()).getTextField();
+        txt = ((JSpinner.NumberEditor) nbTiragesField.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
 
         JLabel nbTiragesText = new JLabel("Nombre de votes :");
+        JLabel nomItemAddLabel = new JLabel("Nom de l'item :");
+        JLabel qtyItemAddLabel = new JLabel("Quantité de l'item :");
+        JLabel probItemAddLabel = new JLabel("Probabilité d'obtention :");
         
         add(itemListScroll);
         add(ajouterBtn);
@@ -87,10 +98,14 @@ public class VotingProjectWindow extends JFrame {
         add(tirageBtn);
         add(nbTiragesField);
         add(nbTiragesText);
+        add(nomItemAdd);
+        add(itemQtyAdd);
         
 
         itemListScroll.setBounds((int)(getWidth()*0.02), (int)(getHeight()*0.02), (int)(getWidth()*0.7), (int)(getHeight()*0.7));
         ajouterBtn.setBounds((int)((itemListScroll.getX()+itemListScroll.getWidth()*1.08)),(int)(getHeight()*.6),150,20);
+        nomItemAdd.setBounds(ajouterBtn.getX(),(int)(ajouterBtn.getY()-getHeight()*.3),150,20);
+        itemQtyAdd.setBounds(nomItemAdd.getX(),(int)(nomItemAdd.getY()+nomItemAdd.getHeight()*2),70,20);
         retirerBtn.setBounds(ajouterBtn.getX(), ajouterBtn.getY()+(int)(35*(screenHeight/1080)), 150,20);
         nbTiragesField.setBounds((int)(getWidth()*.3),(int)((itemListScroll.getY()+itemListScroll.getHeight()*1.1)),150,20);
         tirageBtn.setBounds((int)((nbTiragesField.getX()+nbTiragesField.getWidth())*1.1),nbTiragesField.getY(),150,20);
