@@ -28,7 +28,7 @@ public class sauverBtnListener implements ActionListener {
         fDialog.setMode(FileDialog.SAVE);
         fDialog.setVisible(true);
 
-        Tirage.getInstance().accepteSauvegarde(new VisiteurSauvegardeCSV(fDialog.getDirectory()+fDialog.getFile()));
+        if(fDialog.getFile()!=null)Tirage.getInstance().accepteSauvegarde(new VisiteurSauvegardeCSV(fDialog.getDirectory()+fDialog.getFile()));
 
     }
 }

@@ -19,7 +19,8 @@ public class chargerBtnListener implements ActionListener {
         expertChargement = new ExpertChargementCSV(null);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void actionPerformed(ActionEvent e) {
         Tirage t = Tirage.getInstance();
         VotingProjectWindow window = VotingProjectWindow.getInstance();
@@ -31,7 +32,9 @@ public class chargerBtnListener implements ActionListener {
         fDialog.setMode(FileDialog.LOAD);
         fDialog.setVisible(true);
 
-        t.setItems((ArrayList<Item>) expertChargement.resoudre(fDialog.getDirectory()+fDialog.getFile()));
-        window.updateList(window.convertTirageToArray());
+        if(fDialog.getFile()!=null) {
+        	t.setItems((ArrayList<Item>) expertChargement.resoudre(fDialog.getDirectory()+fDialog.getFile()));
+            window.updateList(window.convertTirageToArray());
+        }
     }
 }

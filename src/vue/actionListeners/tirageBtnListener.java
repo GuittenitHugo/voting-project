@@ -16,7 +16,7 @@ public class tirageBtnListener implements ActionListener
         VotingProjectWindow window = VotingProjectWindow.getInstance();
         String textField = window.getTextField();
         int res = Integer.parseInt(textField);
-        if (res>0){
+        if (res>0 && t.getItems().size()>0){
             t.effectuerTirages(res);
             window.updateList(window.convertTirageToArray());
         }
