@@ -2,27 +2,17 @@ package vue;
 
 import modele.Item;
 import modele.Tirage;
-import vue.actionListeners.ajouterBtnListener;
-import vue.actionListeners.chargerBtnListener;
-import vue.actionListeners.retirerBtnListener;
-import vue.actionListeners.sauverBtnListener;
-import vue.actionListeners.tirageBtnListener;
+import vue.actionListeners.*;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.InternationalFormatter;
-import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import java.awt.*;
-import java.lang.reflect.Array;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class VotingProjectWindow extends JFrame {
@@ -33,6 +23,8 @@ public class VotingProjectWindow extends JFrame {
     private JSpinner nbTiragesField;
     private JFormattedTextField nomItemAdd;
     private JSpinner itemQtyAdd,itemPercentageAdd;
+    private JButton ajouterBtn,retirerBtn, tirageBtn;
+    private JMenuItem charger, sauver;
 
     public static VotingProjectWindow getInstance(){
         if(instance==null)
@@ -43,13 +35,14 @@ public class VotingProjectWindow extends JFrame {
     private VotingProjectWindow() {
         super();
 
+
         setTitle("Gestion des items de vote");
-        
-        ArrayList<String> list = new ArrayList<>();
+
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double screenWidth = screenSize.getWidth();
         double screenHeight = screenSize.getHeight();
+
 
         setBounds((int)(screenWidth/100),(int)(screenHeight/100),(int)(screenWidth/2), (int)(screenHeight/1.5));
         setResizable(false);
@@ -57,34 +50,38 @@ public class VotingProjectWindow extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
         JMenuBar barreOutils = new JMenuBar();
         JMenu fichier = new JMenu("Fichier");
-        JMenuItem charger = new JMenuItem("Charger fichier (.csv)");
-        JMenuItem sauver = new JMenuItem("Sauvegarder");
+        charger = new JMenuItem("Charger fichier (.csv)");
+        sauver = new JMenuItem("Sauvegarder");
+
 
         fichier.add(charger);
         fichier.add(sauver);
         barreOutils.add(fichier);
         setJMenuBar(barreOutils);
 
+
         String[] colonnes = {"Item","Quantité","Probabilité","Résultat dernier tirage"};
-        String[][] lignes = new String[0][];
-        DefaultTableModel TblMdl = new DefaultTableModel(convertTirageToArray(),colonnes);
+        itemListModel TblMdl = new itemListModel(convertTirageToArray(),colonnes);
         itemList = new JTable(TblMdl);
         itemList.getTableHeader().setReorderingAllowed(false);
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane itemListScroll = new JScrollPane(itemList);
-        
+
+
         nomItemAdd = new JFormattedTextField();
         itemQtyAdd = new JSpinner();
         itemPercentageAdd = new JSpinner();
-        
-        
+
+
         SpinnerModel itemQtyModel = new SpinnerNumberModel(1, 1, 64, 0.0001);
         itemQtyAdd.setModel(itemQtyModel);
         JFormattedTextField txt = ((JSpinner.NumberEditor) itemQtyAdd.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
-        
+
+
         SpinnerModel itemPercentageModel = new SpinnerNumberModel(0.00, 0, 100, 0.001);
         itemPercentageAdd.setModel(itemPercentageModel);
         JSpinner.NumberEditor numberEditor = new JSpinner.NumberEditor(itemPercentageAdd,"0.000");
@@ -93,9 +90,11 @@ public class VotingProjectWindow extends JFrame {
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
         itemPercentageAdd.setEditor(numberEditor);
 
-        JButton ajouterBtn = new JButton("Ajouter item");
-        JButton retirerBtn = new JButton("Retirer item");
-        JButton tirageBtn = new JButton("Faire tirage(s)");
+
+        ajouterBtn = new JButton("Ajouter item");
+        retirerBtn = new JButton("Retirer item");
+        tirageBtn = new JButton("Faire tirage(s)");
+
 
         nbTiragesField = new JSpinner();
         SpinnerModel model = new SpinnerNumberModel(1, 1, 999999999, 1);
@@ -103,11 +102,13 @@ public class VotingProjectWindow extends JFrame {
         txt = ((JSpinner.NumberEditor) nbTiragesField.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
 
+
         JLabel nbTiragesLabel = new JLabel("Nombre de votes :");
         JLabel nomItemAddLabel = new JLabel("Nom de l'item :");
         JLabel qtyItemAddLabel = new JLabel("Quantité de l'item :");
         JLabel probItemAddLabel = new JLabel("Probabilité d'obtention :");
-        
+
+
         add(itemListScroll);
         add(ajouterBtn);
         add(retirerBtn);
@@ -120,7 +121,7 @@ public class VotingProjectWindow extends JFrame {
         add(nomItemAddLabel);
         add(qtyItemAddLabel);
         add(probItemAddLabel);
-        
+
 
         itemListScroll.setBounds((int)(getWidth()*0.02), (int)(getHeight()*0.02), (int)(getWidth()*0.7), (int)(getHeight()*0.7));
         ajouterBtn.setBounds((int)((itemListScroll.getX()+itemListScroll.getWidth()*1.08)),(int)(getHeight()*.6),150,20);
@@ -145,13 +146,32 @@ public class VotingProjectWindow extends JFrame {
         ajouterBtn.addActionListener(new ajouterBtnListener());
         retirerBtn.addActionListener(new retirerBtnListener());
         tirageBtn.addActionListener(new tirageBtnListener());
+        nomItemAdd.getDocument().addDocumentListener(new nomItemListener());
+
+
+        retirerBtn.setEnabled(false);
+        tirageBtn.setEnabled(false);
+        sauver.setEnabled(false);
+        ajouterBtn.setEnabled(false);
 
     }
 
     public void updateList(String[][] list){
         DefaultTableModel dTM = (DefaultTableModel) itemList.getModel();
+        int newRowCount;
         dTM.setDataVector(list, new String[]{"Item", "Quantité", "Probabilité", "Résultat dernier tirage"});
         itemList.setModel(dTM);
+        newRowCount = itemList.getRowCount();
+        if (newRowCount!=0 && !retirerBtn.isEnabled()){
+            retirerBtn.setEnabled(true);
+            tirageBtn.setEnabled(true);
+            sauver.setEnabled(true);
+        }
+        if(newRowCount==0 && retirerBtn.isEnabled()){
+            retirerBtn.setEnabled(false);
+            tirageBtn.setEnabled(false);
+            sauver.setEnabled(false);
+        }
     }
 
     public String getTextField(){
@@ -194,5 +214,12 @@ public class VotingProjectWindow extends JFrame {
     		itemData.add(itemPercentageAdd.getValue().toString());
     	}
     	return itemData;
+    }
+
+    public void updateAjouterBtn(){
+        if(nomItemAdd.getText().isBlank() && ajouterBtn.isEnabled())
+            ajouterBtn.setEnabled(false);
+        if(!nomItemAdd.getText().isBlank() && !ajouterBtn.isEnabled())
+            ajouterBtn.setEnabled(true);
     }
 }
