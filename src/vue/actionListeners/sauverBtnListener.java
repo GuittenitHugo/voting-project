@@ -4,6 +4,7 @@ import modele.Item;
 import modele.Tirage;
 import modele.gestionFichiers.experts.Expert;
 import modele.gestionFichiers.experts.chargement.ExpertChargementCSV;
+import modele.gestionFichiers.metier.Extension;
 import modele.gestionFichiers.visiteur.sauvegarde.VisiteurSauvegardeCSV;
 import vue.VotingProjectWindow;
 
@@ -24,11 +25,15 @@ public class sauverBtnListener implements ActionListener {
         Expert expertChargement = new ExpertChargementCSV(null);
 
         FileDialog fDialog = new FileDialog(window, "");
-        fDialog.setTitle("Sauvegarder");
+        fDialog.setTitle("Sauvegarder (.csv)");
         fDialog.setMode(FileDialog.SAVE);
         fDialog.setVisible(true);
 
-        if(fDialog.getFile()!=null)Tirage.getInstance().accepteSauvegarde(new VisiteurSauvegardeCSV(fDialog.getDirectory()+fDialog.getFile()));
+        String path = fDialog.getDirectory() + fDialog.getFile();
+        if (!fDialog.getFile().endsWith(".csv"))
+            path+=".csv";
+
+        if(fDialog.getFile()!=null)Tirage.getInstance().accepteSauvegarde(new VisiteurSauvegardeCSV(path));
 
     }
 }

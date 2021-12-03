@@ -76,7 +76,7 @@ public class VotingProjectWindow extends JFrame {
         itemPercentageAdd = new JSpinner();
 
 
-        SpinnerModel itemQtyModel = new SpinnerNumberModel(1, 1, 64, 0.0001);
+        SpinnerModel itemQtyModel = new SpinnerNumberModel(1, 1, 64, 1);
         itemQtyAdd.setModel(itemQtyModel);
         JFormattedTextField txt = ((JSpinner.NumberEditor) itemQtyAdd.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);

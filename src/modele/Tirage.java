@@ -90,7 +90,7 @@ public class Tirage {
 	
 	public String getResultatDernierTirage(){
 		String resultatString;
-		if(nbItems == null) resultatString = "Aucun tirage effectué dernièrement";
+		if(nbItems.size()==0) resultatString = "Aucun tirage effectué dernièrement";
 		else {
 			int nbTirages;
 			Item item;

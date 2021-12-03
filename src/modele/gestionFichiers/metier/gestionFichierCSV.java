@@ -26,8 +26,8 @@ public class gestionFichierCSV extends gestionFichier{
                     stringIntoTirage(line, t);
                 }
                 reader.close();
-                return t;
             }
+            return t;
         }catch(Exception e){
             e.printStackTrace();
         }
