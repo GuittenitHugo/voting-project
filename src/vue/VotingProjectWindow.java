@@ -125,8 +125,8 @@ public class VotingProjectWindow extends JFrame {
         itemListScroll.setBounds((int)(getWidth()*0.02), (int)(getHeight()*0.02), (int)(getWidth()*0.7), (int)(getHeight()*0.7));
         ajouterBtn.setBounds((int)((itemListScroll.getX()+itemListScroll.getWidth()*1.08)),(int)(getHeight()*.6),150,20);
         nomItemAdd.setBounds(ajouterBtn.getX(),(int)(ajouterBtn.getY()-getHeight()*.3),150,20);
-        itemQtyAdd.setBounds(nomItemAdd.getX(),(int)(nomItemAdd.getY()+nomItemAdd.getHeight()*2),70,20);
-        itemPercentageAdd.setBounds(itemQtyAdd.getX(),(int)(itemQtyAdd.getY()+itemQtyAdd.getHeight()*2),70,20);
+        itemQtyAdd.setBounds(nomItemAdd.getX(),nomItemAdd.getY()+nomItemAdd.getHeight()*2,70,20);
+        itemPercentageAdd.setBounds(itemQtyAdd.getX(),itemQtyAdd.getY()+itemQtyAdd.getHeight()*2,70,20);
         retirerBtn.setBounds(ajouterBtn.getX(), ajouterBtn.getY()+(int)(35*(screenHeight/1080)), 150,20);
         nbTiragesField.setBounds((int)(getWidth()*.3),(int)((itemListScroll.getY()+itemListScroll.getHeight()*1.1)),150,20);
         tirageBtn.setBounds((int)((nbTiragesField.getX()+nbTiragesField.getWidth())*1.1),nbTiragesField.getY(),150,20);
@@ -168,7 +168,6 @@ public class VotingProjectWindow extends JFrame {
         Tirage t = Tirage.getInstance();
         String[][] tirage = new String[t.getItems().size()][4];
         Item item;
-        System.out.println(t.getProbaGlobale());
         if(t.getItems() != null){
             for(int i=0;i<t.getItems().size();i++){
                 item = t.getItems().get(i);

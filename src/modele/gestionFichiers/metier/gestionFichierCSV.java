@@ -26,7 +26,6 @@ public class gestionFichierCSV extends gestionFichier{
                     stringIntoTirage(line, t);
                 }
                 reader.close();
-                System.out.println(t.getItems());
                 return t;
             }
         }catch(Exception e){
@@ -36,7 +35,7 @@ public class gestionFichierCSV extends gestionFichier{
     }
 
     private void stringIntoTirage(String line, Tirage t){
-        ArrayList<String> res = new ArrayList<>();
+        ArrayList<String> res;
         String[] resList;
         resList = line.contains(";") ? line.split(";") : line.split(",",3);
         res = new ArrayList<>(Arrays.asList(resList));
