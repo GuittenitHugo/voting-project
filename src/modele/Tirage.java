@@ -2,6 +2,7 @@ package modele;
 
 import modele.gestionFichiers.visiteur.Visiteur;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Tirage {
@@ -19,23 +20,33 @@ public class Tirage {
 		return instance;
 	}
 
+	private Tirage(){
+		items = new ArrayList<>();
+		nbItems = new ArrayList<>();
+	}
+
 	public ArrayList<Item> getItems() {
 		return items;
 	}
 
 	public void setItems(ArrayList<Item> items) {
 		this.items = items;
+		nbItems = new ArrayList<>();
 		calculProbaTotaleTirage(items);
 	}
 	
 	public void AjouterItem(Item item) {
 		this.items.add(item);
-		probaTotale+=item.getProbabilite();
+		nbItems = new ArrayList<>();
+
+		probaTotale+= item.getProbabilite();
 	}
 	
 	public void RetirerItem(Item item) {
-		if (this.items.remove(item))
+		if (this.items.remove(item)){
 			probaTotale-=item.getProbabilite();
+			nbItems = new ArrayList<>();
+		}
 	}
 
 	public double getProbaGlobale() {
@@ -51,7 +62,7 @@ public class Tirage {
 	
 	private int faireTirage() throws IllegalStateException {
 		if(items.size() <= 0) throw new IllegalStateException("Aucun item détecté pour le tirage");
-		double resTirage = Math.random()*probaTotale;
+		double resTirage = probaTotale*Math.random();
 		double probaCumulee = 0;
 		for (Item item : items) {
 			probaCumulee += item.getProbabilite();
@@ -79,7 +90,7 @@ public class Tirage {
 	
 	public String getResultatDernierTirage(){
 		String resultatString;
-		if(nbItems == null) resultatString = "Aucun tirage effectué dernièrement";
+		if(nbItems.size()==0) resultatString = "Aucun tirage effectué dernièrement";
 		else {
 			int nbTirages;
 			Item item;

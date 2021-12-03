@@ -13,5 +13,5 @@ public class VisiteurSauvegardeCSV extends Visiteur {
         this.path = path;
     }
     @Override
-    public void visite(Tirage t) { new gestionFichierCSV().sauvegarder(t, path); };
+    public void visite(Tirage t) { new gestionFichierCSV().sauvegarder(path); };
 }
