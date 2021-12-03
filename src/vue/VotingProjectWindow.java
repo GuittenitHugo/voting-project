@@ -209,8 +209,7 @@ public class VotingProjectWindow extends JFrame {
     	ArrayList<String> itemData = new ArrayList<>();
     	if(!nomItemAdd.getText().isBlank()) {
     		itemData.add(nomItemAdd.getText());
-    		Double d = (Double)itemQtyAdd.getValue();
-    		itemData.add(""+d.intValue());
+    		itemData.add(itemQtyAdd.getValue().toString());
     		itemData.add(itemPercentageAdd.getValue().toString());
     	}
     	return itemData;
