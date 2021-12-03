@@ -103,7 +103,7 @@ public class VotingProjectWindow extends JFrame {
         txt = ((JSpinner.NumberEditor) nbTiragesField.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
 
-        JLabel nbTiragesText = new JLabel("Nombre de votes :");
+        JLabel nbTiragesLabel = new JLabel("Nombre de votes :");
         JLabel nomItemAddLabel = new JLabel("Nom de l'item :");
         JLabel qtyItemAddLabel = new JLabel("Quantité de l'item :");
         JLabel probItemAddLabel = new JLabel("Probabilité d'obtention :");
@@ -113,10 +113,13 @@ public class VotingProjectWindow extends JFrame {
         add(retirerBtn);
         add(tirageBtn);
         add(nbTiragesField);
-        add(nbTiragesText);
         add(nomItemAdd);
         add(itemQtyAdd);
         add(itemPercentageAdd);
+        add(nbTiragesLabel);
+        add(nomItemAddLabel);
+        add(qtyItemAddLabel);
+        add(probItemAddLabel);
         
 
         itemListScroll.setBounds((int)(getWidth()*0.02), (int)(getHeight()*0.02), (int)(getWidth()*0.7), (int)(getHeight()*0.7));
@@ -127,8 +130,14 @@ public class VotingProjectWindow extends JFrame {
         retirerBtn.setBounds(ajouterBtn.getX(), ajouterBtn.getY()+(int)(35*(screenHeight/1080)), 150,20);
         nbTiragesField.setBounds((int)(getWidth()*.3),(int)((itemListScroll.getY()+itemListScroll.getHeight()*1.1)),150,20);
         tirageBtn.setBounds((int)((nbTiragesField.getX()+nbTiragesField.getWidth())*1.1),nbTiragesField.getY(),150,20);
-        nbTiragesText.setSize((int)(6.2*nbTiragesText.getText().length()), nbTiragesField.getHeight());
-        nbTiragesText.setLocation(nbTiragesField.getX()-nbTiragesText.getWidth(), nbTiragesField.getY());
+        nbTiragesLabel.setSize((int)(6.2*nbTiragesLabel.getText().length()), nbTiragesField.getHeight());
+        nbTiragesLabel.setLocation(nbTiragesField.getX()-nbTiragesLabel.getWidth(), nbTiragesField.getY());
+        nomItemAddLabel.setLocation(nomItemAdd.getX(), nomItemAdd.getY()-nomItemAdd.getHeight());
+        nomItemAddLabel.setSize((int)(6.2*nomItemAddLabel.getText().length()), nomItemAdd.getHeight());
+        qtyItemAddLabel.setLocation(itemQtyAdd.getX(), itemQtyAdd.getY()-itemQtyAdd.getHeight());
+        qtyItemAddLabel.setSize((int)(6.2*qtyItemAddLabel.getText().length()), itemQtyAdd.getHeight());
+        probItemAddLabel.setLocation(itemPercentageAdd.getX(), itemPercentageAdd.getY()-itemPercentageAdd.getHeight());
+        probItemAddLabel.setSize((int)(6.2*probItemAddLabel.getText().length()), itemPercentageAdd.getHeight());
 
 
         charger.addActionListener(new chargerBtnListener());

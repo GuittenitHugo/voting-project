@@ -14,11 +14,11 @@ public class ajouterBtnListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Tirage t = Tirage.getInstance();
 		VotingProjectWindow window = VotingProjectWindow.getInstance();
-		int itemRange = window.getSelectedItem();
 		ArrayList<String> array = window.getItemInfosToAdd();
 		if(array.size()>0) {
-			t.AjouterItem(new Item(array.get(0), Integer.parseInt(array.get(1)), Double.parseDouble(array.get(2))));
-			System.out.println(array);
+			double probability = Double.parseDouble(array.get(2))/100;
+			probability = t.getProbaGlobale()!=0 ? (probability * t.getProbaGlobale())/(1-probability) : 1;
+			t.AjouterItem(new Item(array.get(0), Integer.parseInt(array.get(1)), probability));
 			window.updateList(window.convertTirageToArray());
 		}
 	}
